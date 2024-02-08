@@ -196,17 +196,21 @@
 				<p>
 					time:
 					{#if startTime}
-						{((timeNow - startTime) / 1000).toFixed(1)} s
+						{((timeNow - startTime) / 1000).toFixed(1)}s
 					{:else}
-						0.0 s
+						0.0s
 					{/if}
 				</p>
 				<p>
-					Theta 1: {radToDeg(theta1).toFixed(2)}
+					Theta 1: {radToDeg(theta1).toFixed(2)}°
 				</p>
 				<p>
-					Theta 2: {radToDeg(theta2).toFixed(2)}
+					Theta 2: {radToDeg(theta2).toFixed(2)}°
 				</p>
+				<p>ω1: {w1.toFixed(2)} rad/s</p>
+				<p>ω2: {w2.toFixed(2)} rad/s</p>
+				<p>ω'1: {w1D.toFixed(2)} rad/s^2</p>
+				<p>ω'2: {w2D.toFixed(2)} rad/s^2</p>
 			</div>
 		</div>
 	</div>
