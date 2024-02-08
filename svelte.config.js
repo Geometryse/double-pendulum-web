@@ -7,9 +7,9 @@ const config = {
 
 	kit: {
 		adapter: adapter(),
-		paths: {
-			base: process.env.NODE_ENV === 'production' ? '/double-pendulum-web' : ''
-		}
+		// paths: {
+		// 	base: process.env.NODE_ENV === 'production' ? '/double-pendulum-web' : ''
+		// }
 	}
 };
 
