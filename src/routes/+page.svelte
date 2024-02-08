@@ -20,7 +20,7 @@
 	let m1: number = $state(1);
 	let m2: number = $state(1);
 
-	let dt: number = $state(0.05);
+	let dt: number = $state(0.04);
 
 	const x1 = $derived(l1 * Math.sin(theta1));
 	const y1 = $derived(-l1 * Math.cos(theta1));
@@ -44,20 +44,16 @@
 
 	let startTime: number | null = $state(null);
 	let timeNow: number = $state(Date.now());
-	const start = () => {
-		theta1 = degToRad(defaultTheta1);
-		theta2 = degToRad(defaultTheta2);
-		w1 = 0;
-		w2 = 0;
-		w1D = 0;
-		w2D = 0;
-		pathD = `M ${x2} ${y2}`;
-		pathLength = 0;
-		prevX2 = x2;
-		prevY2 = y2;
+	let pauseTime: number = 0;
 
-		startTime = Date.now();
-		timeNow = startTime;
+	const start = () => {
+		if (!startTime) {
+			clearPath();
+			startTime = Date.now();
+		} else {
+			startTime += Date.now() - pauseTime;
+		}
+		timeNow = Date.now();
 		const update = () => {
 			// huge thanks to https://www.myphysicslab.com/pendulum/double-pendulum-en.html and chatgpt
 			w1D =
@@ -99,29 +95,51 @@
 		};
 		animation = requestAnimationFrame(update);
 	};
-	const handleClick = () => {
+	const handlePauseClick = () => {
 		if (animation) {
 			cancelAnimationFrame(animation);
 			animation = null;
-
-			setTimeout(() => {
-				theta1 = degToRad(defaultTheta1);
-				theta2 = degToRad(defaultTheta2);
-				pathLength = 0;
-				startTime = null;
-			}, 20);
+			pauseTime = Date.now();
 		} else start();
+	};
+	const handleResetClick = () => {
+		if (animation) {
+			cancelAnimationFrame(animation);
+			animation = null;
+		}
+
+		theta1 = degToRad(defaultTheta1);
+		theta2 = degToRad(defaultTheta2);
+		setTimeout(() => {
+			w1 = 0;
+			w2 = 0;
+			w1D = 0;
+			w2D = 0;
+			clearPath();
+			pathLength = 0;
+			prevX2 = x2;
+			prevY2 = y2;
+			startTime = null;
+		}, 30);
+	};
+	const clearPath = () => {
+		pathD = `M ${x2} ${y2}`;
 	};
 	// Update thetas on defaultTheta change
 	$effect(() => {
 		theta1 = degToRad(defaultTheta1);
 		theta2 = degToRad(defaultTheta2);
+		// and make sure angular vel and acc are zero
+		w1 = 0;
+		w2 = 0;
+		w1D = 0;
+		w2D = 0;
 	});
+
 	$effect(() => {
 		if (animation && startTime) {
 			if ((timeNow - startTime) / 1000 > stopTime) {
-				cancelAnimationFrame(animation);
-				animation = null;
+				handlePauseClick();
 			}
 		}
 	});
@@ -148,8 +166,12 @@
 		</svg>
 	</div>
 	<div class="mr-10 space-y-2">
-		<button on:click={handleClick} class="btn btn-primary w-20">{active ? 'Reset' : 'Start'}</button
-		>
+		<div class="flex gap-3">
+			<button on:click={handlePauseClick} class="btn btn-primary w-20"
+				>{active ? 'Pause' : 'Start'}</button
+			>
+			<button on:click={handleResetClick} class="btn btn-secondary">Reset</button>
+		</div>
 		<div class="flex flex-col">
 			<label for="theta1" class="">theta1: {defaultTheta1}°</label>
 			<input
