@@ -52,6 +52,7 @@
 		w1D = 0;
 		w2D = 0;
 		pathD = `M ${x2} ${y2}`;
+		pathLength = 0;
 		prevX2 = x2;
 		prevY2 = y2;
 
