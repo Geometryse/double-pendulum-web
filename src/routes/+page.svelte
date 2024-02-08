@@ -217,7 +217,7 @@
 			<p class="mb-2">Live values:</p>
 			<div class="space-y-1 px-2">
 				<p>
-					path length: {(pathLength / 100).toFixed(2)}m
+					path length: {(pathLength / 10).toFixed(2)}m
 				</p>
 				<p>
 					time:
