@@ -20,6 +20,8 @@
 	let m1: number = $state(1);
 	let m2: number = $state(1);
 
+	let dt: number = $state(0.05);
+
 	const x1 = $derived(l1 * Math.sin(theta1));
 	const y1 = $derived(-l1 * Math.cos(theta1));
 
@@ -43,8 +45,6 @@
 	let startTime: number | null = $state(null);
 	let timeNow: number = $state(Date.now());
 	const start = () => {
-		const dt = 0.015;
-
 		theta1 = degToRad(defaultTheta1);
 		theta2 = degToRad(defaultTheta2);
 		w1 = 0;
@@ -83,7 +83,7 @@
 			theta2 += w2 * dt;
 
 			timeNow = Date.now();
-			if (timeNow - lastPathUpdate > 20) {
+			if (timeNow - lastPathUpdate > 5) {
 				lastPathUpdate = Date.now();
 				pathD += ` L ${x2} ${y2}`;
 				const distance = Math.sqrt((x2 - prevX2) ** 2 + (y2 - prevY2) ** 2);
@@ -188,6 +188,7 @@
 
 			<Input bind:value={l1}>Length 1 (m)</Input>
 			<Input bind:value={l2}>Length 2 (m)</Input>
+			<Input bind:value={dt}>dt</Input>
 		</div>
 
 		<div>
