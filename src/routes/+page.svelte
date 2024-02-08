@@ -211,6 +211,10 @@
 				<p>ω2: {w2.toFixed(2)} rad/s</p>
 				<p>ω'1: {w1D.toFixed(2)} rad/s^2</p>
 				<p>ω'2: {w2D.toFixed(2)} rad/s^2</p>
+				<p>x1: {x1.toFixed(2)}</p>
+				<p>y1: {-y1.toFixed(2)}</p>
+				<p>x2: {x2.toFixed(2)}</p>
+				<p>y2: {-y2.toFixed(2)}</p>
 			</div>
 		</div>
 	</div>
