@@ -34,6 +34,7 @@
 
 	let pathD = $state(`M ${x2} ${y2}`);
 	let pathLength = $state(0);
+	let lastPathUpdate: number = $state(0);
 
 	let prevX2 = x2;
 	let prevY2 = y2;
@@ -80,18 +81,19 @@
 			theta1 += w1 * dt;
 			theta2 += w2 * dt;
 
-			pathD += ` L ${x2} ${y2}`;
 			timeNow = Date.now();
+			if (timeNow - lastPathUpdate > 20) {
+				lastPathUpdate = Date.now();
+				pathD += ` L ${x2} ${y2}`;
+				const distance = Math.sqrt((x2 - prevX2) ** 2 + (y2 - prevY2) ** 2);
 
-			const distance = Math.sqrt((x2 - prevX2) ** 2 + (y2 - prevY2) ** 2);
+				// Accumulate the total path length
+				pathLength += distance;
 
-			// Accumulate the total path length
-			pathLength += distance;
-
-			// Update the previous position for the next frame
-			prevX2 = x2;
-			prevY2 = y2;
-
+				// Update the previous position for the next frame
+				prevX2 = x2;
+				prevY2 = y2;
+			}
 			if (animation) requestAnimationFrame(update);
 		};
 		animation = requestAnimationFrame(update);
