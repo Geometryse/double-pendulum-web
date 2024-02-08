@@ -5,7 +5,7 @@
 	 * Parameters
 	 */
 
-	let stopTime: number = $state(10);
+	let stopTime: number = $state(999);
 	let defaultTheta1 = $state(40);
 	let defaultTheta2 = $state(90);
 
@@ -176,7 +176,7 @@
 		<div class="gap-3 grid grid-cols-3">
 			<Input bind:value={defaultTheta1}>Theta 1 (°)</Input>
 			<Input bind:value={defaultTheta2}>Theta 2 (°)</Input>
-			<Input bind:value={stopTime}>Max length (s)</Input>
+			<Input bind:value={stopTime}>Max duration (s)</Input>
 
 			<Input bind:value={m1}>Mass 1 (kg)</Input>
 			<Input bind:value={m2}>Mass 2 (kg)</Input>
