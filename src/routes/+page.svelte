@@ -149,6 +149,9 @@
 <div class="items-center justify-center w-full grid grid-cols-3">
 	<div class="col-span-2">
 		<svg width="1000" height="950" viewBox="-25 -25 50 50">
+			<!-- Path -->
+			<path d={pathD} fill="none" stroke="gray" stroke-width="0.2" />
+
 			<!-- First rod -->
 			<line x1="0" y1="0" x2={x1} y2={y1} stroke="white" stroke-width="0.5px" />
 
@@ -160,9 +163,6 @@
 
 			<!-- Second weight -->
 			<circle cx={x2} cy={y2} r={Math.log10(m2 * 50)} fill="red" />
-
-			<!-- Path -->
-			<path d={pathD} fill="none" stroke="gray" stroke-width="0.2" />
 		</svg>
 	</div>
 	<div class="mr-10 space-y-2">
