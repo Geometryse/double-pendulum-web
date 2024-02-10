@@ -28,15 +28,14 @@
 	const x2 = $derived(x1 + l2 * Math.sin(theta2));
 	const y2 = $derived(y1 - l2 * Math.cos(theta2));
 
+	let initx2: number = $state(0);
+	let inity2: number = $state(0);
+
 	let w1 = $state(0); // represents angular velocity of top rod. Derivative of theta1
 	let w2 = $state(0); // represents angular velocity of bottom rod. Derivative of theta2
 
 	let w1D = $state(0); // angular acceleration
 	let w2D = $state(0); // angular acceleration
-
-	let pathD = $state(`M ${x2} ${y2}`);
-	let pathLength = $state(0);
-	let lastPathUpdate: number = $state(0);
 
 	let prevX2 = x2;
 	let prevY2 = y2;
@@ -45,6 +44,13 @@
 	let startTime: number | null = $state(null);
 	let timeNow: number = $state(Date.now());
 	let pauseTime: number = 0;
+
+	let drawPath: boolean = $state(true);
+
+	let initPath = $derived(drawPath ? `M ${initx2} ${inity2}` : '');
+	let pathD = $state('');
+	let pathLength = $state(0);
+	let lastPathUpdate: number = $state(0);
 
 	const start = () => {
 		if (!startTime) {
@@ -55,7 +61,7 @@
 		}
 		timeNow = Date.now();
 		const update = () => {
-			// huge thanks to https://www.myphysicslab.com/pendulum/double-pendulum-en.html and chatgpt
+			// huge thanks to https://www.myphysicslab.com/pendulum/double-pendulum-en.html
 			w1D =
 				(-g * (2 * m1 + m2) * Math.sin(theta1) -
 					m2 * g * Math.sin(theta1 - 2 * theta2) -
@@ -79,9 +85,10 @@
 			theta2 += w2 * dt;
 
 			timeNow = Date.now();
-			if (timeNow - lastPathUpdate > 5) {
-				lastPathUpdate = Date.now();
+			if (drawPath) {
 				pathD += ` L ${x2} ${y2}`;
+				lastPathUpdate = Date.now();
+
 				const distance = Math.sqrt((x2 - prevX2) ** 2 + (y2 - prevY2) ** 2);
 
 				// Accumulate the total path length
@@ -143,6 +150,15 @@
 			}
 		}
 	});
+
+	$effect(() => {
+		if (drawPath) {
+			initx2 = x2;
+			inity2 = y2;
+		} else {
+			pathD = '';
+		}
+	});
 	const active = $derived(!!animation);
 </script>
 
@@ -150,7 +166,7 @@
 	<div class="col-span-2">
 		<svg width="1000" height="950" viewBox="-25 -25 50 50">
 			<!-- Path -->
-			<path d={pathD} fill="none" stroke="gray" stroke-width="0.2" />
+			<path d={initPath + pathD} fill="none" stroke="gray" stroke-width="0.2" />
 
 			<!-- First rod -->
 			<line x1="0" y1="0" x2={x1} y2={y1} stroke="white" stroke-width="0.5px" />
@@ -171,6 +187,12 @@
 				>{active ? 'Pause' : 'Start'}</button
 			>
 			<button on:click={handleResetClick} class="btn btn-secondary">Reset</button>
+			<div class="form-control w-[6.5rem]">
+				<label class="label cursor-pointer">
+					<span class="label-text">Draw path</span>
+					<input type="checkbox" class="checkbox" bind:checked={drawPath} />
+				</label>
+			</div>
 		</div>
 		<div class="flex flex-col">
 			<label for="theta1" class="">theta1: {defaultTheta1}°</label>
