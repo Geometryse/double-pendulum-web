@@ -46,6 +46,8 @@
 	let timeNow: number = $state(Date.now());
 	let pauseTime: number = 0;
 
+	let interval: number | null;
+
 	const start = () => {
 		if (!startTime) {
 			clearPath();
@@ -91,21 +93,20 @@
 				prevX2 = x2;
 				prevY2 = y2;
 			}
-			if (animation) requestAnimationFrame(update);
 		};
-		animation = requestAnimationFrame(update);
+		interval = setInterval(update, dt);
 	};
 	const handlePauseClick = () => {
-		if (animation) {
-			cancelAnimationFrame(animation);
-			animation = null;
+		if (interval) {
+			clearInterval(interval);
+			interval = null;
 			pauseTime = Date.now();
 		} else start();
 	};
 	const handleResetClick = () => {
-		if (animation) {
-			cancelAnimationFrame(animation);
-			animation = null;
+		if (interval) {
+			clearInterval(interval);
+			interval = null;
 		}
 
 		theta1 = degToRad(defaultTheta1);
