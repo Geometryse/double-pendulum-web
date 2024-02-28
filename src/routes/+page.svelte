@@ -40,13 +40,12 @@
 
 	let prevX2 = x2;
 	let prevY2 = y2;
-	let animation: number | null = $state(null);
 
 	let startTime: number | null = $state(null);
 	let timeNow: number = $state(Date.now());
 	let pauseTime: number = 0;
 
-	let interval: number | null;
+	let interval: number | null = $state(null);
 
 	const start = () => {
 		if (!startTime) {
@@ -139,13 +138,13 @@
 	});
 
 	$effect(() => {
-		if (animation && startTime) {
+		if (interval && startTime) {
 			if ((timeNow - startTime) / 1000 > stopTime) {
 				handlePauseClick();
 			}
 		}
 	});
-	const active = $derived(!!animation);
+	const active = $derived(!!interval);
 </script>
 
 <div class="items-center justify-center w-full grid grid-cols-3">
