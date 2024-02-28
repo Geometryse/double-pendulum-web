@@ -20,7 +20,7 @@
 	let m1: number = $state(1);
 	let m2: number = $state(1);
 
-	let dt: number = $state(0.04);
+	let dt: number = $state(0.01);
 
 	const x1 = $derived(l1 * Math.sin(theta1));
 	const y1 = $derived(-l1 * Math.cos(theta1));
