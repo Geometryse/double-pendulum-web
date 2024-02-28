@@ -57,7 +57,6 @@
 		}
 		timeNow = Date.now();
 		const update = () => {
-			// huge thanks to https://www.myphysicslab.com/pendulum/double-pendulum-en.html and chatgpt
 			w1D =
 				(-g * (2 * m1 + m2) * Math.sin(theta1) -
 					m2 * g * Math.sin(theta1 - 2 * theta2) -
@@ -84,6 +83,8 @@
 			if (timeNow - lastPathUpdate > 5) {
 				lastPathUpdate = Date.now();
 				pathD += ` L ${x2} ${y2}`;
+
+				// Approximate the new distance with the pythagorean theorem
 				const distance = Math.sqrt((x2 - prevX2) ** 2 + (y2 - prevY2) ** 2);
 
 				// Accumulate the total path length
