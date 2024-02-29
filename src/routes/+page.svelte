@@ -37,6 +37,7 @@
 	let pathD = $state(`M ${x2} ${y2}`);
 	let pathLength = $state(0);
 	let lastPathUpdate: number = $state(0);
+	let showPath = $state(false);
 
 	let prevX2 = x2;
 	let prevY2 = y2;
@@ -81,7 +82,7 @@
 			timeNow = Date.now();
 			if (timeNow - lastPathUpdate > 5) {
 				lastPathUpdate = Date.now();
-				pathD += ` L ${x2} ${y2}`;
+				if (showPath) pathD += ` L ${x2} ${y2}`;
 
 				// Approximate the new distance with the pythagorean theorem
 				const distance = Math.sqrt((x2 - prevX2) ** 2 + (y2 - prevY2) ** 2);
@@ -144,6 +145,9 @@
 			}
 		}
 	});
+	$effect(() => {
+		if (!showPath) clearPath();
+	});
 	const active = $derived(!!interval);
 </script>
 
@@ -163,7 +167,9 @@
 			<circle cx={x2} cy={y2} r={Math.log10(m2 * 50)} fill="red" />
 
 			<!-- Path -->
-			<path d={pathD} fill="none" stroke="gray" stroke-width="0.2" />
+			{#if showPath}
+				<path d={pathD} fill="none" stroke="gray" stroke-width="0.2" />
+			{/if}
 		</svg>
 	</div>
 	<div class="mr-10 space-y-2">
@@ -172,6 +178,12 @@
 				>{active ? 'Pause' : 'Start'}</button
 			>
 			<button on:click={handleResetClick} class="btn btn-secondary">Reset</button>
+			<div class="form-control w-28">
+				<label class="label cursor-pointer">
+					<span class="label-text">Show path</span>
+					<input type="checkbox" bind:checked={showPath} class="checkbox" />
+				</label>
+			</div>
 		</div>
 		<div class="flex flex-col">
 			<label for="theta1" class="">theta1: {defaultTheta1}°</label>
@@ -198,7 +210,6 @@
 				step="5"
 			/>
 		</div>
-
 		<div class="gap-3 grid grid-cols-3">
 			<Input bind:value={defaultTheta1}>Theta 1 (°)</Input>
 			<Input bind:value={defaultTheta2}>Theta 2 (°)</Input>
