@@ -1,21 +1,27 @@
 <script lang="ts">
 	import { degToRad, radToDeg } from '$lib/util';
-	import Input from './Input.svelte';
+	import { Input } from '$lib/components/ui/input';
+	import { Button } from '$lib/components/ui/button';
+	import { Checkbox } from '$lib/components/ui/checkbox';
+	import Label from '$lib/components/ui/label/label.svelte';
+	import { Slider } from '$lib/components/ui/slider';
+
+	// import Input from './Input.svelte';
 	/**
 	 * Parameters
 	 */
 
 	let stopTime: number = $state(999);
-	let defaultTheta1 = $state(40);
-	let defaultTheta2 = $state(90);
+	let defaultTheta1: [number] = $state([40]);
+	let defaultTheta2: [number] = $state([90]);
 
 	let g: number = $state(-9.81);
 
 	let l1: number = $state(10);
 	let l2: number = $state(10);
 
-	let theta1: number = $state(degToRad(defaultTheta1));
-	let theta2: number = $state(degToRad(defaultTheta2));
+	let theta1: number = $state(degToRad(defaultTheta1[0]));
+	let theta2: number = $state(degToRad(defaultTheta2[0]));
 
 	let m1: number = $state(1);
 	let m2: number = $state(1);
@@ -110,8 +116,8 @@
 			interval = null;
 		}
 
-		theta1 = degToRad(defaultTheta1);
-		theta2 = degToRad(defaultTheta2);
+		theta1 = degToRad(defaultTheta1[0]);
+		theta2 = degToRad(defaultTheta2[0]);
 		setTimeout(() => {
 			w1 = 0;
 			w2 = 0;
@@ -129,8 +135,8 @@
 	};
 	// Update thetas on defaultTheta change
 	$effect(() => {
-		theta1 = degToRad(defaultTheta1);
-		theta2 = degToRad(defaultTheta2);
+		theta1 = degToRad(defaultTheta1[0]);
+		theta2 = degToRad(defaultTheta2[0]);
 		// and make sure angular vel and acc are zero
 		w1 = 0;
 		w2 = 0;
@@ -151,9 +157,9 @@
 	const active = $derived(!!interval);
 </script>
 
-<div class="items-center justify-center w-full grid grid-cols-3">
-	<div class="col-span-2">
-		<svg width="1000" height="950" viewBox="-25 -25 50 50">
+<div class="grid w-full grid-cols-5 items-center justify-center divide-x">
+	<div class="col-span-3 flex h-full items-center justify-center">
+		<svg width="100%" viewBox="-25 -25 50 50">
 			<!-- First rod -->
 			<line x1="0" y1="0" x2={x1} y2={y1} stroke="white" stroke-width="0.5px" />
 
@@ -172,58 +178,58 @@
 			{/if}
 		</svg>
 	</div>
-	<div class="mr-10 space-y-2">
+	<div class="col-span-2 mx-auto space-y-2 px-20">
 		<div class="flex gap-3">
-			<button on:click={handlePauseClick} class="btn btn-primary w-20"
-				>{active ? 'Pause' : 'Start'}</button
+			<Button on:click={handlePauseClick} class="w-20 font-medium"
+				>{active ? 'Pause' : 'Start'}</Button
 			>
-			<button on:click={handleResetClick} class="btn btn-secondary">Reset</button>
-			<div class="form-control w-28">
-				<label class="label cursor-pointer">
-					<span class="label-text">Show path</span>
-					<input type="checkbox" bind:checked={showPath} class="checkbox" />
-				</label>
+			<Button on:click={handleResetClick} class="">Reset</Button>
+			<div class="flex w-28 items-center space-x-2">
+				<Checkbox id="terms" bind:checked={showPath} />
+				<Label
+					for="terms"
+					class="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+				>
+					Show path
+				</Label>
 			</div>
 		</div>
-		<div class="flex flex-col">
-			<label for="theta1" class="">theta1: {defaultTheta1}°</label>
-			<input
-				type="range"
-				class="range w-full"
-				id="theta1"
-				min="-180"
-				max="180"
-				bind:value={defaultTheta1}
-				step="5"
-			/>
-		</div>
 
 		<div class="flex flex-col">
-			<label for="theta1">theta2: {defaultTheta2}°</label>
-			<input
-				class="range w-full"
-				type="range"
-				id="theta2"
-				min="-180"
-				max="180"
-				bind:value={defaultTheta2}
-				step="5"
-			/>
+			<Label
+				for="Ntheta1"
+				class="text-md leading-8 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+				>theta1: {defaultTheta1}°</Label
+			>
+			<Slider id="Ntheta1" bind:value={defaultTheta1} max={180} min={-180} step={5} />
 		</div>
-		<div class="gap-3 grid grid-cols-3">
-			<Input bind:value={defaultTheta1}>Theta 1 (°)</Input>
-			<Input bind:value={defaultTheta2}>Theta 2 (°)</Input>
-			<Input bind:value={stopTime}>Max duration (s)</Input>
-
-			<Input bind:value={m1}>Mass 1 (kg)</Input>
-			<Input bind:value={m2}>Mass 2 (kg)</Input>
-
-			<Input bind:value={g}>g (m/s^2)</Input>
-
-			<Input bind:value={l1}>Length 1 (m)</Input>
-			<Input bind:value={l2}>Length 2 (m)</Input>
-			<Input bind:value={dt}>dt</Input>
+		<div class="flex flex-col">
+			<Label
+				for="Ntheta1"
+				class="text-md leading-8 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+				>theta2: {defaultTheta2}°</Label
+			>
+			<Slider id="Ntheta1" bind:value={defaultTheta2} max={180} min={-180} step={5} />
 		</div>
+
+		<br />
+
+		<div class="grid grid-cols-3 gap-3">
+			<Input bind:value={defaultTheta1[0]} type="number">Theta 1 (°)</Input>
+			<Input bind:value={defaultTheta2[0]} type="number">Theta 2 (°)</Input>
+			<Input bind:value={stopTime} type="number">Max duration (s)</Input>
+
+			<Input bind:value={m1} type="number">Mass 1 (kg)</Input>
+			<Input bind:value={m2} type="number">Mass 2 (kg)</Input>
+
+			<Input bind:value={g} type="number">g (m/s^2)</Input>
+
+			<Input bind:value={l1} type="number">Length 1 (m)</Input>
+			<Input bind:value={l2} type="number">Length 2 (m)</Input>
+			<Input bind:value={dt} type="number">dt</Input>
+		</div>
+
+		<br />
 
 		<div>
 			<p class="mb-2">Live values:</p>
