@@ -235,7 +235,7 @@
 		<!-- Live Values -->
 		<div>
 			<p class="mb-2">Live values:</p>
-			<div class="space-y-1 px-2">
+			<div class="space-y-1 px-2 font-mono">
 				<p>
 					path length: {(pathLength / 10).toFixed(2)}m
 				</p>
