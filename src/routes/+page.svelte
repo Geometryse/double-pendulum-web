@@ -6,10 +6,11 @@
 	import Label from '$lib/components/ui/label/label.svelte';
 	import { Slider } from '$lib/components/ui/slider';
 
-	// import Input from './Input.svelte';
 	/**
 	 * Parameters
 	 */
+
+	// const defaultValues
 
 	let stopTime: number = $state(999);
 	let defaultTheta1: [number] = $state([40]);
@@ -27,6 +28,8 @@
 	let m2: number = $state(1);
 
 	let dt: number = $state(0.01);
+	// dt to speed: dt * 500
+	let speed: [number] = $state([5]);
 
 	const x1 = $derived(l1 * Math.sin(theta1));
 	const y1 = $derived(-l1 * Math.cos(theta1));
@@ -133,6 +136,7 @@
 	const clearPath = () => {
 		pathD = `M ${x2} ${y2}`;
 	};
+
 	// Update thetas on defaultTheta change
 	$effect(() => {
 		theta1 = degToRad(defaultTheta1[0]);
@@ -153,6 +157,9 @@
 	});
 	$effect(() => {
 		if (!showPath) clearPath();
+	});
+	$effect(() => {
+		dt = speed[0] / 500;
 	});
 	const active = $derived(!!interval);
 </script>
@@ -197,23 +204,14 @@
 		</div>
 
 		<!-- Ranges -->
-		<div class="space-y-2">
-			<div class="flex flex-col">
-				<Label
-					for="Ntheta1"
-					class="text-md leading-8 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-					>Theta 1: {defaultTheta1}°</Label
-				>
-				<Slider id="Ntheta1" bind:value={defaultTheta1} max={180} min={-180} step={5} />
-			</div>
-			<div class="flex flex-col">
-				<Label
-					for="Ntheta1"
-					class="text-md leading-8 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-					>Theta 2: {defaultTheta2}°</Label
-				>
-				<Slider id="Ntheta1" bind:value={defaultTheta2} max={180} min={-180} step={5} />
-			</div>
+		<div class="space-y-2 px-10 pb-5">
+			<Slider id="theta1" bind:value={defaultTheta1} max={180} min={-180} step={5}
+				>Theta 1: {defaultTheta1}°</Slider
+			>
+			<Slider id="theta2" bind:value={defaultTheta2} max={180} min={-180} step={5}
+				>Theta 2: {defaultTheta2}°</Slider
+			>
+			<Slider id="Ntheta1" bind:value={speed} min={1} max={15} step={1}>Speed: {speed[0]}</Slider>
 		</div>
 
 		<!-- Inputs -->
