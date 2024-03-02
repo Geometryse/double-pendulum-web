@@ -225,7 +225,7 @@
 			<Input bind:value={m1} type="number">Mass 1 (kg)</Input>
 			<Input bind:value={m2} type="number">Mass 2 (kg)</Input>
 
-			<Input bind:value={g} type="number">g (m/s^2)</Input>
+			<Input bind:value={g} type="number">g (ms⁻²)</Input>
 
 			<Input bind:value={l1} type="number">Length 1 (m)</Input>
 			<Input bind:value={l2} type="number">Length 2 (m)</Input>
@@ -253,10 +253,10 @@
 				<p>
 					Theta 2: {radToDeg(theta2).toFixed(2)}°
 				</p>
-				<p>ω1: {w1.toFixed(2)} rad/s</p>
-				<p>ω2: {w2.toFixed(2)} rad/s</p>
-				<p>ω'1: {w1D.toFixed(2)} rad/s^2</p>
-				<p>ω'2: {w2D.toFixed(2)} rad/s^2</p>
+				<p>ω1: {w1.toFixed(2)} rad s⁻¹</p>
+				<p>ω2: {w2.toFixed(2)} rad s⁻¹</p>
+				<p>ω'1: {w1D.toFixed(2)} rad s⁻²</p>
+				<p>ω'2: {w2D.toFixed(2)} rad s⁻²</p>
 				<p>x1: {x1.toFixed(2)}</p>
 				<p>y1: {-y1.toFixed(2)}</p>
 				<p>x2: {x2.toFixed(2)}</p>
