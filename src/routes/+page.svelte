@@ -158,8 +158,8 @@
 </script>
 
 <div class="grid w-full grid-cols-5 items-center justify-center divide-x">
-	<div class="col-span-3 flex h-full items-center justify-center">
-		<svg width="100%" viewBox="-25 -25 50 50">
+	<div class="col-span-3 max-h-screen items-center justify-center">
+		<svg class="aspect-square max-h-full w-full" viewBox="-25 -25 50 50">
 			<!-- First rod -->
 			<line x1="0" y1="0" x2={x1} y2={y1} stroke="white" stroke-width="0.5px" />
 
@@ -178,7 +178,8 @@
 			{/if}
 		</svg>
 	</div>
-	<div class="col-span-2 mx-auto space-y-2 px-20">
+	<div class="col-span-2 mx-auto space-y-6 px-20">
+		<!-- Buttons -->
 		<div class="flex gap-3">
 			<Button on:click={handlePauseClick} class="w-20 font-medium"
 				>{active ? 'Pause' : 'Start'}</Button
@@ -195,25 +196,27 @@
 			</div>
 		</div>
 
-		<div class="flex flex-col">
-			<Label
-				for="Ntheta1"
-				class="text-md leading-8 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-				>theta1: {defaultTheta1}°</Label
-			>
-			<Slider id="Ntheta1" bind:value={defaultTheta1} max={180} min={-180} step={5} />
-		</div>
-		<div class="flex flex-col">
-			<Label
-				for="Ntheta1"
-				class="text-md leading-8 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-				>theta2: {defaultTheta2}°</Label
-			>
-			<Slider id="Ntheta1" bind:value={defaultTheta2} max={180} min={-180} step={5} />
+		<!-- Ranges -->
+		<div class="space-y-2">
+			<div class="flex flex-col">
+				<Label
+					for="Ntheta1"
+					class="text-md leading-8 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+					>Theta 1: {defaultTheta1}°</Label
+				>
+				<Slider id="Ntheta1" bind:value={defaultTheta1} max={180} min={-180} step={5} />
+			</div>
+			<div class="flex flex-col">
+				<Label
+					for="Ntheta1"
+					class="text-md leading-8 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+					>Theta 2: {defaultTheta2}°</Label
+				>
+				<Slider id="Ntheta1" bind:value={defaultTheta2} max={180} min={-180} step={5} />
+			</div>
 		</div>
 
-		<br />
-
+		<!-- Inputs -->
 		<div class="grid grid-cols-3 gap-3">
 			<Input bind:value={defaultTheta1[0]} type="number">Theta 1 (°)</Input>
 			<Input bind:value={defaultTheta2[0]} type="number">Theta 2 (°)</Input>
@@ -229,8 +232,7 @@
 			<Input bind:value={dt} type="number">dt</Input>
 		</div>
 
-		<br />
-
+		<!-- Live Values -->
 		<div>
 			<p class="mb-2">Live values:</p>
 			<div class="space-y-1 px-2">
