@@ -164,7 +164,7 @@
 	const active = $derived(!!interval);
 </script>
 
-<div class="grid w-full grid-cols-5 items-center justify-center divide-x">
+<div class="mx-auto grid h-screen w-3/4 grid-cols-5 items-center justify-center divide-x">
 	<div class="col-span-3 max-h-screen items-center justify-center">
 		<svg class="aspect-square max-h-full w-full" viewBox="-25 -25 50 50">
 			<!-- First rod -->
