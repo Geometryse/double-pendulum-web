@@ -10,8 +10,6 @@
 	 * Parameters
 	 */
 
-	// const defaultValues
-
 	let stopTime: number = $state(999);
 	let defaultTheta1: [number] = $state([40]);
 	let defaultTheta2: [number] = $state([90]);
@@ -29,6 +27,7 @@
 
 	let dt: number = $state(0.01);
 	// dt to speed: dt * 500
+	// speed is an array because of slider component. thanks shadcn-svelte.
 	let speed: [number] = $state([5]);
 
 	const x1 = $derived(l1 * Math.sin(theta1));
